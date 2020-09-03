@@ -1,0 +1,43 @@
+<%- include('parts/header.ejs') %>
+</head>
+<body id="login">
+    <div class="overlay">
+    <!-- ================================spinner============================== -->
+        <div class="parent-spinner">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+    <!-- ================================/spinner============================== -->
+
+    <!-- ======================login form================================= -->
+    <div class="container pt-5">
+        <div class="row">
+            <div class="col-md-6 m-auto p-5">
+                <div class="form p-5 ">
+                    <h2 class="text-center text-white">Sign In</h2>
+                    <% if (MessageError.find(e=>e.param=='incorrect')) { %>
+                        <div class="alert alert-danger text-center text-danger text-capitalize font-weight-bold" role="alert">
+                            invalid email or password
+                        </div>
+                    <% } %>
+                    <% if (MessageError.find(e=>e.param=='Not Regisered')) { %>
+                        <div class="alert alert-danger text-center text-danger text-capitalize font-weight-bold" role="alert">
+                            user not found
+                        </div>
+                    <% } %>
+                    <form action="/login" method="POST">
+                        <input placeholder="Email" type="email" name="email" class="form-control my-4 inp" type="text">
+                        <input placeholder="Password" type="password" name="password" class="form-control my-4 inp" type="text">
+                        <button class="btn btn-outline-info w-100 text-white">Login</button>
+                        <p class="text-center text-white pt-3">
+                            Don't Have an account..?  <a href="registration" class="text-white" >Sign Up Here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('parts/footer.ejs') %>

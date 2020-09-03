@@ -1,0 +1,45 @@
+<%- include('parts/header.ejs') %>
+</head>
+
+<body id="login">
+
+    <div class="overlay">
+
+        <!-- ======================Registration form================================= -->
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col-md-7 m-auto p-5">
+                    <div class="form p-5 ">
+                        <h2 class="text-center text-white">Registration</h2>
+                        <form action="/registration" method="POST">
+                        
+                            <% if (MessageError.find(e=>e.param=='exists')) { %>
+                            <div class="alert alert-danger text-center text-danger text-capitalize font-weight-bold" role="alert">
+                                email already exists
+                            </div>
+                            <% } %>
+                       
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input type="text" name="firstName" value="<%= oldData.firstName %>" class="<%= MessageError.find(e=>e.param=='firstName')?'is-invalid':'' %> form-control inp pt-3" placeholder="First Name">
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="lastName" value="<%= oldData.lastName %>" class="<%= MessageError.find(e=>e.param=='lastName')?'is-invalid':'' %> form-control inp pt-3" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <input type="text" name="userName" value="<%= oldData.userName %>" class="<%= MessageError.find(e=>e.param=='userName')?'is-invalid':'' %> form-control inp pt-3" placeholder="Username">
+                            <input type="email" name="email" value="<%= oldData.email %>" class="<%= MessageError.find(e=>e.param=='email')?'is-invalid':'' %> form-control inp pt-3" placeholder="Email">
+                            <input type="password" name="password" value="<%= oldData.password %>" class="<%= MessageError.find(e=>e.param=='password')?'is-invalid':'' %> form-control inp pt-3" placeholder="Password">
+                            <input type="password" name="confirmPassword" class="<%= MessageError.find(e=>e.param=='confirmPassword')?'is-invalid':'' %> form-control inp pt-3 mb-3" placeholder="confirm Password">
+                            <button type="submit" class="btn btn-outline-info text-white w-100">Sign Up</button>
+                            <p class="text-center pb-3">
+                                <a href="/login" class="text-white mt-3 d-block">Sign In Here</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include('parts/footer.ejs') %>
