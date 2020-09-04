@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-4 ">
                 <div class="person card pb-5 px-5  text-center">
-                    <img src="images/man.jpg" width="250" alt="">
+                    <img src="/<%=userImage%>" width="250" alt="">
                 </div>
             </div>
             <div class="col-md-8 pt-4">
@@ -24,7 +24,7 @@
                 <%for(let userPost of userPosts){%>
                     <div class="post card p-4 auto">
                     <div class="media">
-                        <img src="images/man.jpg" width="60" class="mr-3" alt="...">
+                        <img src="/<%=userImage%>" width="60" class="mr-3" alt="...">
                         <div class="media-body">
                             <h5 class="mt-0 text-capitalize"><%=userPost.userID.firstName%> <%=userPost.userID.lastName%></h5>
                           <%=userPost.publishDate.toLocaleString().split(',')[0]%> - <%=userPost.publishDate.toLocaleString().split(',')[1]%>
