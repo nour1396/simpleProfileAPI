@@ -1,0 +1,32 @@
+<%- include('parts/header.ejs') %>
+</head>
+
+<body id="home">
+    <!-- ===================================navbar===================================== -->
+  <%- include('parts/navbar.ejs') %>
+    <!-- ===================================/navbar===================================== -->
+
+
+
+    <div class="container mt-5 pt-5">
+        <div class="row">
+            <div class="col-md-8 m-auto card p-5">
+                <div class="">
+                    <h3>Account Setting</h3>
+                    <hr>
+                    <% if (MessageErr!='') { %>
+                        <div class="alert alert-danger text-center text-danger text-capitalize font-weight-bold" role="alert">
+                            <%=MessageErr%>
+                        </div>
+                    <% } %>
+                    <form action="/editPass" method="POST">
+                        <input placeholder="Enter Old Password" value="<%= oldData.oldPass %>" name="oldPass" type="text" class="form-control my-2">
+                        <input placeholder="New Password" name="newPass" value="<%= oldData.newPass %>" type="text" class="<%= MessageError.find(e=>e.param=='newPass')?'is-invalid':'' %> form-control my-2">
+                        <input placeholder="Repeat Password" name="confirmPasswordAccSetting" value="<%= oldData.confirmPasswordAccSetting %>" type="text" class="<%= MessageError.find(e=>e.param=='confirmPasswordAccSetting')?'is-invalid':'' %> form-control my-2">
+                        <button class="btn btn-info mt-3">Save Setting</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('parts/footer.ejs') %>

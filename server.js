@@ -45,7 +45,7 @@ let storage = multer.diskStorage({
         cb(null, Date.now() + '-' + Math.random() * 100 + file.originalname)
     }
 });
-app.use(multer({ dest: 'uploads', storage }).single( /* input file name */ ))
+app.use(multer({ dest: 'uploads', storage }).single('userImg'))
 
 app.use(mainRouting);
 //listening of port 

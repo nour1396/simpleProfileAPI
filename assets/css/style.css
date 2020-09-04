@@ -1,5 +1,9 @@
 /* =====================spinner===================== */
 
+body {
+    font-family: 'Roboto'!important;
+}
+
 .parent-spinner {
     position: absolute;
     top: 0;

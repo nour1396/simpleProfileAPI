@@ -9,10 +9,10 @@
       <ul class="navbar-nav m-auto ">
 
         <li class="nav-item">
-          <a class="nav-link" href="home.html">Home</a>
+          <a class="nav-link" href="/home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="profile.html">My Profile</a>
+          <a class="nav-link" href="/profile">My Profile</a>
         </li>
       </ul>
     </div>
@@ -20,12 +20,12 @@
       <ul class="navbar-nav m-auto ">
         <li class="nav-item dropdown ">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img width="40" src="images/man.jpg" alt=""> Ahmed
+            <img width="40" height="50" src="/<%=userImage%>" alt=""> <span class="text-capitalize font-weight-bold"><%=currentUser%></span>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="acount_setting.html">Account Setting</a>
+            <a class="dropdown-item" href="/accountSetting">Account Setting</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="index.html">Logout</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
           </div>
         </li>
       </ul>

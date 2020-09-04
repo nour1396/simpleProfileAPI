@@ -11,7 +11,7 @@
                 <div class="col-md-7 m-auto p-5">
                     <div class="form p-5 ">
                         <h2 class="text-center text-white">Registration</h2>
-                        <form action="/registration" method="POST">
+                        <form action="/registration" method="POST" enctype="multipart/form-data">
                         
                             <% if (MessageError.find(e=>e.param=='exists')) { %>
                             <div class="alert alert-danger text-center text-danger text-capitalize font-weight-bold" role="alert">
@@ -28,6 +28,7 @@
                                 </div>
                             </div>
                             <input type="text" name="userName" value="<%= oldData.userName %>" class="<%= MessageError.find(e=>e.param=='userName')?'is-invalid':'' %> form-control inp pt-3" placeholder="Username">
+                            <!----><input type="file" name="userImg" class="form-control inp pt-3 pb-5">
                             <input type="email" name="email" value="<%= oldData.email %>" class="<%= MessageError.find(e=>e.param=='email')?'is-invalid':'' %> form-control inp pt-3" placeholder="Email">
                             <input type="password" name="password" value="<%= oldData.password %>" class="<%= MessageError.find(e=>e.param=='password')?'is-invalid':'' %> form-control inp pt-3" placeholder="Password">
                             <input type="password" name="confirmPassword" class="<%= MessageError.find(e=>e.param=='confirmPassword')?'is-invalid':'' %> form-control inp pt-3 mb-3" placeholder="confirm Password">

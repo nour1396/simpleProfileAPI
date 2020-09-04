@@ -1,0 +1,25 @@
+<%- include('parts/header')%>
+</head>
+<body>
+<%- include('parts/navbar')%>
+
+<div class="container py-5">
+    <div class="modal-content w-50 m-auto">
+        <div class="modal-header bg-light">
+            <h5 class="modal-title text-capitalize font-weight-bold" id="addNewArticleLabel">edit post</h5>
+        </div>
+        <form action="/editPost/<%=post._id %>" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+                <div class="container ">
+                    <input type="text" class="form-control my-1" name="postTitle" placeholder="enter post title" value="<%=post.postTitle %>">
+                    <textarea rows="10" class="form-control my-1" name="postContent" placeholder="enter post Content"><%= post.postContent %></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info text-capitalize">update</button>
+            </div>
+        </form> 
+    </div>
+</div>
+
+<%- include('parts/footer')%>

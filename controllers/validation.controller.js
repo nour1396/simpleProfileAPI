@@ -14,5 +14,13 @@ exports.registrationValidation = [
         return true;
     })
 ]
-
+exports.editPassValidation = [
+    check('newPass', '').matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{5,}$/),
+    check('confirmPasswordAccSetting', 'invalid').custom((value, { req }) => {
+        if (value !== req.body.newPass) {
+            throw new Error('Password does not match');
+        }
+        return true;
+    })
+];
 /* ^[a-zA-Z0-9](_(?!(\.|_))|\.(?!(_.))|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$*/

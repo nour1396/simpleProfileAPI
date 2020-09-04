@@ -6,8 +6,6 @@
     <%- include('parts/navbar.ejs') %>
     <!-- ===================================/navbar===================================== -->
 
-
-
     <div class="cover">
 
     </div>
@@ -20,37 +18,33 @@
                 </div>
             </div>
             <div class="col-md-8 pt-4">
-                <h2>Ahmed Abd Al-Muti</h2>
+                <h2 class="text-capitalize"><%=pageTitle%></h2>
                 <h4 class="text-muted">Full Stack Web</h4>
 
-                <div class="post card p-4 auto">
+                <%for(let userPost of userPosts){%>
+                    <div class="post card p-4 auto">
                     <div class="media">
                         <img src="images/man.jpg" width="60" class="mr-3" alt="...">
                         <div class="media-body">
-                            <h5 class="mt-0">Ahmed Abd Al-Muti</h5>
-                            3 min.
+                            <h5 class="mt-0 text-capitalize"><%=userPost.userID.firstName%> <%=userPost.userID.lastName%></h5>
+                          <%=userPost.publishDate.toLocaleString().split(',')[0]%> - <%=userPost.publishDate.toLocaleString().split(',')[1]%>
+                            
+                            <!--<%if(userPost.publishDate>Date().toLocaleString()){%>
+                                <%=userPost.publishDate.toLocaleString().split(',')[1]%> 
+                            <%}else{%>
+                                <%=userPost.publishDate.toLocaleString().split(',')[0]%> 
+                            <%}%> -->
+                        </div>
+                        <div class="float-right">
+                            <a href="/editPost/<%= userPost._id%>"><i class="fas fa-edit "></i></a>
+                            <a href="/deletePost/<%= userPost._id%>"><i class="far fa-trash-alt text-danger"></i></a>
                         </div>
                     </div>
                     <hr>
-                    <h3>Senior Node.js Developer</h3>
-                    <p class="pt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit
-                        metus, ut ullamcorper quam finibus at. Etiam id magna sit amet...</p>
-
+                    <h3><%=userPost.postTitle%></h3>
+                    <p class="pt-4"><%=userPost.postContent%></p>
                 </div>
-                <div class="post card p-4 auto">
-                    <div class="media">
-                        <img src="images/man.jpg" width="60" class="mr-3" alt="...">
-                        <div class="media-body">
-                            <h5 class="mt-0">Ahmed Abd Al-Muti</h5>
-                            3 min.
-                        </div>
-                    </div>
-                    <hr>
-                    <h3>Senior Node.js Developer</h3>
-                    <p class="pt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit
-                        metus, ut ullamcorper quam finibus at. Etiam id magna sit amet...</p>
-
-                </div>
+                <%}%>
             </div>
         </div>
     </div>
