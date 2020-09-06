@@ -13,12 +13,7 @@ const store = new MongoDBStore({
     uri: configDB.url,
     collection: 'userSessions'
 });
-//static path for css and javascript files
-/* app.use(express.static(path.join(__dirname, 'assets')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); */
-/* //set view engine
-app.set('views', 'views');
-app.set('view engine', 'ejs'); */
+
 //body parser
 app.use(express.json());
 
