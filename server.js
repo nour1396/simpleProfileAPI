@@ -14,13 +14,13 @@ const store = new MongoDBStore({
     collection: 'userSessions'
 });
 //static path for css and javascript files
-app.use(express.static(path.join(__dirname, 'assets')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-//set view engine
+/* app.use(express.static(path.join(__dirname, 'assets')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); */
+/* //set view engine
 app.set('views', 'views');
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); */
 //body parser
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 
 //connect to mongoDB
 mongoose.connect(configDB.url, {

@@ -4,8 +4,7 @@ const userController = require('../controllers/user.controller');
 const validationController = require('../controllers/validation.controller');
 const postController = require('../controllers/post.controller');
 
-//===== get  form =====
-router.get('/', userController.getLogin);
+
 
 //===== get registration form =====
 router.get('/registration', userController.getRegistration);
@@ -13,8 +12,7 @@ router.get('/registration', userController.getRegistration);
 //===== save registration form =====
 router.post('/registration', validationController.registrationValidation, userController.postRegistration);
 
-//===== get login form =====
-router.get('/login', userController.getLogin);
+
 
 //===== submit login =====
 router.post('/login', userController.handleLogin);
@@ -37,8 +35,7 @@ router.post('/editPost/:id', postController.handleEditPost);
 //===== delete post =====
 router.get('/deletePost/:id', postController.handleDeletePost);
 
-//===== get accountSetting form =====
-router.get('/accountSetting', isLoggedIn, userController.accountSetting);
+
 
 router.post('/editPass', validationController.editPassValidation, userController.editPass);
 

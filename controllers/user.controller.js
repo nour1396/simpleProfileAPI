@@ -13,7 +13,8 @@ exports.getRegistration = async(req, res) => {
 };
 
 exports.postRegistration = async(req, res) => {
-    let err = validationResult(req);
+    try {
+        let err = validationResult(req);
     let {
         firstName,
         lastName,
@@ -21,8 +22,8 @@ exports.postRegistration = async(req, res) => {
         email,
         password,
         confirmPassword
-    } = req.body,
-        userImg = req.file.path;
+    } = req.body/* ,
+        userImg = req.file.path; */
     if (err.isEmpty()) {
         const user = await User.findOne({ email });
         if (user) {
@@ -39,36 +40,29 @@ exports.postRegistration = async(req, res) => {
                     lastName,
                     userName,
                     email,
-                    password: hashPassword,
-                    userImg
+                    password: hashPassword/* ,
+                    userImg */
                 });
                 user.save();
-                res.redirect('login')
+                res.json('success')
             });
         }
     } else {
-        res.render("registration", {
+        res.json( {
             pageTitle: "registration",
             isLoggedIn: false,
             MessageError: err.array(),
             oldData: { firstName, lastName, userName, email, password, confirmPassword },
         });
     }
-
-
-
-};
-exports.getLogin = async(req, res) => {
-    res.render("index", {
-        pageTitle: "Login",
-        isLoggedIn: false,
-        MessageError: [],
-        oldData: { email: '', password: '' },
-    });
+    } catch (errors) {
+        res.json(errors)
+    }
 };
 
 exports.handleLogin = async(req, res) => {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (user) {
         const match = await bcrypt.compare(password, user.password);
@@ -79,9 +73,9 @@ exports.handleLogin = async(req, res) => {
             req.session.firstName = user.firstName;
             req.session.lastName = user.lastName;
             req.session.userImg = user.userImg;
-            res.redirect('/home')
+            res.json('success')
         } else {
-            res.render("index", {
+            res.json({
                 pageTitle: "login",
                 isLoggedIn: false,
                 MessageError: [{ param: 'incorrect' }],
@@ -89,23 +83,16 @@ exports.handleLogin = async(req, res) => {
             });
         }
     } else {
-        res.render("index", {
+        res.json( {
             pageTitle: "login",
             isLoggedIn: false,
             MessageError: [{ param: 'Not Regisered' }],
             oldData: { email, password },
         });
     }
-};
-exports.accountSetting = async(req, res) => {
-    res.render('accountSetting', {
-        pageTitle: "accountSetting",
-        MessageError: [],
-        oldData: { oldPass: '', newPass: '', confirmPasswordAccSetting: '' },
-        currentUser: req.session.firstName,
-        userImage: req.session.userImg,
-        MessageErr: ''
-    })
+    } catch (errors) {
+        res.json(errors)
+    }
 };
 
 exports.editPass = async(req, res) => {
@@ -119,21 +106,20 @@ exports.editPass = async(req, res) => {
             bcrypt.hash(newPass, 8, async(err, hashPassword) => {
                 newPass = hashPassword
                 await User.updateOne({ _id: req.session.userID }, { "password": newPass })
-                res.redirect('home')
+                res.json('success')
             });
         } else {
-            res.render("accountSetting", {
+            res.json({
                 pageTitle: "account Setting",
                 MessageError: err.array(),
                 oldData: { oldPass, newPass, confirmPasswordAccSetting },
                 currentUser: req.session.firstName,
                 userImage: req.session.userImg,
                 MessageErr: ''
-            }), console.log(err.array())
-
+            })
         }
     } else {
-        res.render('accountSetting', {
+        res.json({
             pageTitle: "account Setting",
             MessageErr: 'old password not correct',
             oldData: { oldPass, newPass, confirmPasswordAccSetting },
@@ -146,16 +132,16 @@ exports.editPass = async(req, res) => {
 
 exports.home = async(req, res) => {
     let usersPosts = await Post.find().populate('userID', '-_id -password');
-    res.render("home", { pageTitle: req.session.userName, isLoggedIn: req.session.isLoggedIn, MessageError: [], usersPosts, currentUser: req.session.firstName, userImage: req.session.userImg });
+    res.json({ pageTitle: req.session.userName, isLoggedIn: req.session.isLoggedIn, MessageError: [], usersPosts, currentUser: req.session.firstName, userImage: req.session.userImg });
 };
 
 
 exports.logout = (req, res) => {
     req.session.destroy(() => {
-        res.redirect('login')
+        res.json('logout')
     })
 };
 
 exports.notFound = (req, res) => {
-    res.render("NotFound", { pageTitle: 'Not Found 404', currentUser: req.session.firstName, userImage: req.session.userImg });
+    res.json( { pageTitle: 'Not Found 404', currentUser: req.session.firstName, userImage: req.session.userImg });
 };
