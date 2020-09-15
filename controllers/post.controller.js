@@ -3,14 +3,14 @@ const Post = require('../models/posts').Post;
 exports.postHandler = async(req, res) => {
     try {
         let { postTitle, postContent } = req.body;
-    let post = new Post({
-        postContent,
-        postTitle,
-        userID: req.session.userID,
-        publishDate: Date.now()
-    });
-    await post.save();
-    res.json('success')
+        let post = new Post({
+            postContent,
+            postTitle,
+            userID: req.session.userID,
+            publishDate: Date.now()
+        });
+        await post.save();
+        res.json('success')
     } catch (error) {
         res.json(error)
     }
@@ -18,11 +18,11 @@ exports.postHandler = async(req, res) => {
 
 exports.profile = async(req, res) => {
     try {
-        let userPosts = await Post.find({ userID: req.session.userID }).populate('userID', '-_id -password');
-    let userName = req.session.firstName + ' ' + req.session.lastName
-    res.json({ pageTitle: userName, userPosts, currentUser: req.session.firstName, userImage: req.session.userImg })
+    
+        let userPosts = await Post.find({}).populate('userID', '-_id -password');
+        res.json(userPosts)
     } catch (error) {
-        res.json(error)
+        res.json(error, 'ss')
     }
 };
 
@@ -35,9 +35,9 @@ exports.getEditPost = async(req, res) => {
 exports.handleEditPost = async(req, res) => {
     try {
         let id = req.params.id
-    let { postTitle, postContent } = req.body;
-    await Post.updateOne({ _id: id }, { postTitle, postContent })
-    res.json('success')
+        let { postTitle, postContent } = req.body;
+        await Post.updateOne({ _id: id }, { postTitle, postContent })
+        res.json('success')
     } catch (error) {
         res.json(error)
     }
@@ -46,8 +46,8 @@ exports.handleEditPost = async(req, res) => {
 exports.handleDeletePost = async(req, res) => {
     try {
         let id = req.params.id
-    await Post.deleteOne({ _id: id })
-    res.json('success')
+        await Post.deleteOne({ _id: id })
+        res.json('success')
     } catch (error) {
         res.json(error)
     }

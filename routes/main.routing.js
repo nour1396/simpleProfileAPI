@@ -5,7 +5,6 @@ const validationController = require('../controllers/validation.controller');
 const postController = require('../controllers/post.controller');
 
 
-
 //===== get registration form =====
 router.get('/registration', userController.getRegistration);
 
@@ -18,10 +17,10 @@ router.post('/registration', validationController.registrationValidation, userCo
 router.post('/login', userController.handleLogin);
 
 //===== get get all posts  =====
-router.get('/home', isLoggedIn, userController.home);
+router.get('/home', userController.home);
 
 //===== get my posts  =====
-router.get('/profile', isLoggedIn, postController.profile);
+router.get('/profile', postController.profile);
 
 //===== add new post =====
 router.post('/newPost', postController.postHandler);

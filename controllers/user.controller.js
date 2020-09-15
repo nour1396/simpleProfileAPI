@@ -2,6 +2,7 @@ const User = require('../models/users').User;
 const Post = require('../models/posts').Post;
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.getRegistration = async(req, res) => {
     res.render('registration', {
@@ -15,46 +16,48 @@ exports.getRegistration = async(req, res) => {
 exports.postRegistration = async(req, res) => {
     try {
         let err = validationResult(req);
-    let {
-        firstName,
-        lastName,
-        userName,
-        email,
-        password,
-        confirmPassword
-    } = req.body/* ,
-        userImg = req.file.path; */
-    if (err.isEmpty()) {
-        const user = await User.findOne({ email });
-        if (user) {
-            res.render("registration", {
+        let {
+            firstName,
+            lastName,
+            userName,
+            email,
+            password,
+            confirmPassword
+        } = req.body
+            /* ,
+                    userImg = req.file.path; */
+        if (err.isEmpty()) {
+            const user = await User.findOne({ email });
+            if (user) {
+                res.render("registration", {
+                    pageTitle: "registration",
+                    MessageError: [{ param: "exists" }],
+                    isLoggedIn: false,
+                    oldData: { firstName, lastName, userName, email, password, confirmPassword },
+                });
+            } else {
+                bcrypt.hash(password, 8, function(err, hashPassword) {
+                    let user = new User({
+                        firstName,
+                        lastName,
+                        userName,
+                        email,
+                        password: hashPassword
+                            /* ,
+                                                userImg */
+                    });
+                    user.save();
+                    res.json('success')
+                });
+            }
+        } else {
+            res.json({
                 pageTitle: "registration",
-                MessageError: [{ param: "exists" }],
                 isLoggedIn: false,
+                MessageError: err.array(),
                 oldData: { firstName, lastName, userName, email, password, confirmPassword },
             });
-        } else {
-            bcrypt.hash(password, 8, function(err, hashPassword) {
-                let user = new User({
-                    firstName,
-                    lastName,
-                    userName,
-                    email,
-                    password: hashPassword/* ,
-                    userImg */
-                });
-                user.save();
-                res.json('success')
-            });
         }
-    } else {
-        res.json( {
-            pageTitle: "registration",
-            isLoggedIn: false,
-            MessageError: err.array(),
-            oldData: { firstName, lastName, userName, email, password, confirmPassword },
-        });
-    }
     } catch (errors) {
         res.json(errors)
     }
@@ -63,33 +66,36 @@ exports.postRegistration = async(req, res) => {
 exports.handleLogin = async(req, res) => {
     try {
         const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (user) {
-        const match = await bcrypt.compare(password, user.password);
-        if (match) {
-            req.session.isLoggedIn = true;
-            req.session.userID = user._id;
-            req.session.userName = user.userName;
-            req.session.firstName = user.firstName;
-            req.session.lastName = user.lastName;
-            req.session.userImg = user.userImg;
-            res.json('success')
+        const user = await User.findOne({ email });
+        if (user) {
+            const match = await bcrypt.compare(password, user.password);
+            if (match) {
+                jwt.sign({
+                    id: user._id,
+                    userName: user.userName,
+                    email: user.email,
+                    role: user.role
+                }, "simpleProfile", (err, token) => {
+                    res
+                        .header('simplePr', token)
+                        .json({ msg: `successful login, ${user.userName}`, token: `${token}` })
+                })
+            } else {
+                res.json({
+                    pageTitle: "login",
+                    isLoggedIn: false,
+                    MessageError: [{ param: 'incorrect' }],
+                    oldData: { email, password },
+                });
+            }
         } else {
             res.json({
                 pageTitle: "login",
                 isLoggedIn: false,
-                MessageError: [{ param: 'incorrect' }],
+                MessageError: [{ param: 'Not Regisered' }],
                 oldData: { email, password },
             });
         }
-    } else {
-        res.json( {
-            pageTitle: "login",
-            isLoggedIn: false,
-            MessageError: [{ param: 'Not Regisered' }],
-            oldData: { email, password },
-        });
-    }
     } catch (errors) {
         res.json(errors)
     }
@@ -143,5 +149,5 @@ exports.logout = (req, res) => {
 };
 
 exports.notFound = (req, res) => {
-    res.json( { pageTitle: 'Not Found 404', currentUser: req.session.firstName, userImage: req.session.userImg });
+    res.json({ pageTitle: 'Not Found 404', currentUser: req.session.firstName, userImage: req.session.userImg });
 };
